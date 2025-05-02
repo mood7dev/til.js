@@ -159,3 +159,75 @@ let 아이디 : 글자 16자 제한
 let 비밀번호 : 글자 16자 제한
 let 동의체크 : 참/거짓 숫자 1자 제한
 ```
+
+### 1.3. 메모리 공간에 이름 짓는 법(명명법)
+
+- 정말 중요합니다. 이름을 잘못 지으면 다른 개발자에게 혼란을 줌.
+- 개발자들은 코딩 컨벤션이 있습니다.
+- 변수의 철자는 `명사+명사` `영어`로 하셔야 합니다.
+- 숫자 및 공백 및 특수기호는 절대 안돼요.
+- 허용되는 특수기호는 오로지 `_` , `$` 는 허용.
+
+#### 1.3.1. Camel Case
+
+- 반드시 소문자로 시작하고 새로운 명사는 대문자로 시작함.
+- 많은 프로그래머들이 변수하고 생각합니다.
+
+#### 1.3.2. Snake Case
+
+- 변수를 모두 소문자로 작성하고 `_`로 연결한 이름
+
+#### 1.3.3. Kebab Case
+
+- 이름를 소문자로 작성하고 `-` 로 연결한 것.
+- 파일 또는 css 파일에서는 사용합니다.
+- 예) Next.js 의 파일명은 kebab 이 표준입니다.
+
+#### 1.3.4. Pascal Case
+
+- 이름을 대문자로 작성하고 새로운 단어는 대문자로 시작
+- 혹시 객체 변수 아닌가?
+- 혹시 클래스 정의 아닌가?
+
+#### 1.3.5. 대문자
+
+- 상수명으로 판단함.
+
+#### 1.3.6. 적용하기
+
+```js
+let userName : 글자 20자 제한
+let userNum : 글자 13자 제한
+let userPhone : 글자 11자 제한
+let userPost : 글자 5자 제한
+let userAddress : 글자 50자 제한
+let userEmail : 글자 20자 제한
+let userId : 글자 16자 제한
+let userPassword : 글자 16자 제한
+let userAgree : 참/거짓 숫자 1자 제한
+```
+
+### 1.4. 기본 데이터 종류 (원시데이터 : Primitive Data Type)
+
+- number : 숫자
+- string : 글자 (문자, 문자열로 구분)
+- boolean: true/false (나중에 falshy 한 것 알아야 함)
+- undfined: 값이 없어요. (변수 초기값으로 자동 셋팅)
+- null: 개발자가 값이 없다고 지정함. (값이 비었다로 셋팅하라)
+- symbol: 절대로 겹치지 않는 변수이다.
+
+```js
+let userName = ""; // 20자 제한
+let userNum = ""; // 13자 제한
+let userPhone = ""; // 11자 제한
+let userPost = ""; // 5자 제한
+let userAddress = ""; // 50자 제한
+let userEmail = ""; // 20자 제한
+let userId = ""; // 16자 제한
+let userPassword = ""; // 16자 제한
+let userAgree = false; // 숫자 1자 제한
+```
+
+#### var, let, const 정확히 제약사항 파악하기
+
+### 1.5 참조형 데이터 종류(Reference Data Type)

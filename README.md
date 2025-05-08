@@ -531,3 +531,234 @@ const numA = "안녕";
 const numB = "hello";
 const result = strA + strB;
 ```
+
+````js
+const a = 1; // number
+const b = "1"; // string
+const result = a + b; // number + string ==> string
+
+- `-연산자`
+
+```js
+const numA = 100;
+const numB = 10;
+const result = numA - numB;
+````
+
+```js
+const numA = "100";
+const numB = 10;
+const result = numA - numB;
+```
+
+⚠️ 참고: + 연산자는 문자열 연결이 우선이지만, -, \*, / 등의 산술 연산자는 문자열을 숫자로 변환하려고 시도합니다.
+
+### 2.2. 나머지 연산 (`%`)
+
+- 총 게시글 52개
+- 한 페이지당 5개 목록
+- 몇 페이지가 필요한가?
+- 마지막 페이지에서 보여주어야 하는 게시글 수?
+
+```js
+const total = 52;
+const count = 5;
+const totalpage = total / count; // 10.5
+const totalPageNumber = Math.ceil(totalPage); // 11
+const lastCount = total % count; // 2
+```
+
+### 2.4. 증감연산자 ( ++ -- )
+
+- 개발자는 타이핑 수를 줄이려고 노력합니다.
+
+```js
+let num = 5;
+num = num + 1;
+num += 1;
+num--; // 6
+```
+
+num++; // 계산 후에 증가
+num--; // 계산 후에 증감
+++num;
+--num;
+
+### 2.5. 논리연산자
+
+- `falsy` 한 값의 종류 (js 에서 false 라고 판단하는 값)
+
+```js
+"";
+0;
+undefinde;
+null;
+NaN;
+false;
+```
+
+` 최종 결과가 참/거짓 인지 결과를 변수에 저장
+
+#### 2.5.1. OR 연산자
+
+- 2개 중 1개만 true 이면 true, 나머지 false
+
+```js
+let result = true || true; // true
+result = false || false; // false
+result = false || true; // true
+result = "" || true; // true
+```
+
+```js
+let userPass; // 값이 없거나 undefined일 때
+let result = userPass || "비밀번호 넣으세요.";
+```
+
+### 2.5.2. AND 연산자
+
+- 둘 다 true 면 true, 아니면 false
+- 변수에 결과값은 true, flase 가 담겨진다.
+
+```js
+let result = true && true;
+result = false && true;
+```
+
+### 2.5.3. Not 연산자 (반대)
+
+```js
+let result = !true;
+result = !false;
+```
+
+### 2.5.4. 실습 예제
+
+```js
+let nickName = "";
+let displayName = nickName || "Guest";
+console.log(displayName); // Guest
+```
+
+```js
+let title = null;
+let result = title || "제목 없음";
+console.log(result); // 제목 없음
+```
+
+```js
+let totalMoney = 0;
+let result = totalMoney || "장바구니가 비었습니다.";
+console.Log(result);
+```
+
+```js
+let isLogin = true;
+let result = isLogin && "환영합니다.";
+console.log(result);
+```
+
+```js
+let isAdmin = false;
+let result = isAdmin && "관리자 메뉴 표시";
+console.log(result);
+```
+
+```js
+let config = {};
+config.theme = config.theme || "light";
+console.log(config);
+```
+
+```js
+let options = {
+  lang: null,
+  fontSize: 0,
+};
+let lang = options.lang || "ko";
+let fontSize = options.fontSize || 20;
+```
+
+### 2.6. 비교연산자
+
+```js
+let result = "1" == 1; // true  (값은 같음, 타입은 무시)
+let result = "1" === 1; // false (타입이 다름)
+```
+
+### 🔍 차이점 요약
+
+// == 느슨한 동등 : 값만 비교, 필요하면 형 변환
+// === 엄격한 일치 : 값과 타입 모두 같아야 true
+
+```js
+let resultD = 1 < 2; // true
+let resultE = 1 <= 2; // true
+let resultA = 1 !== 2; // true
+```
+
+### 2.7. 병합연산자
+
+- 일반적으로 기본값 셋팅에서 활용
+- falsy 가 아니라 `null, undefined` 일 때만 값을 비교할 경우
+
+```js
+let userName = null;
+let displayName = userName ?? "Guest";
+```
+
+- `??` 연산자는 null 과 undefined 만 비교한다.
+- 나머지는 '||' 과 같다.
+
+```js
+let formInput = {
+  name: "",
+  email: null,
+  phone: undefined,
+};
+
+const name = formInput.name ?? "이름 없음";
+const email = formInput.email ?? "이메일 없음";
+const phone = formInput.phone ?? "전화 없음";
+```
+
+### 2.8. 옵셔널체이닝
+
+- 대상은 객체의 존재 여부에 따라 코드 진행.
+- `{ 속성:값, }`
+
+```js
+const user = {
+  profile: { name: "홍길동" },
+};
+const age = user.profile?.age ?? "정보가 없어서 나이정보를 몰라요";
+```
+
+- `?`
+  객체나 배열에서 **null 또는 undefied**일 경우,
+  오류를 발생시키지 않고 undefied를 반환한느 연산자.
+
+- `??`
+  **null 또는 undefined**인 값에 대해서만,
+  기본값을 제공하는 연산자 **다른 falsy 값(예: false, 0, NaN, "")**에는 기본값을 제공하지 않음.
+
+### 2.9. 3항 연산자
+
+- 연산자가 3개라서 3항 연산자라고 합니다 / 조건에 따라 두 가지 값 중 하나를 선택하는 간단한 조건문
+- `결과 = 조건식 ? 참일때 결과 : 거짓일때 결과`
+
+```js
+const userRole = "ADMIN";
+// const url = 조건 ? 참 : 거짓;
+const url = userRole === "ADMIN" ? "admin.html" : "guest.html"; // admin.html
+```
+
+```js
+const user = {
+  islogin: true,
+  name: "아이유",
+};
+const result = user.islogin
+  ? `${user.name || "사용자"}님 반가워요.`
+  : "로그인 해주세요.";
+```

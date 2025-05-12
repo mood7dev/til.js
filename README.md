@@ -1393,4 +1393,42 @@ const 변수명 = function (매개변수) {
 변수명(매개변수);
 ```
 
-- 3. 왜 변수명 = function 형태가 필요하지?
+- 3. `왜 변수명 = function 형태`가 필요하지?
+
+```js
+// 함수 선언은 코드가 실행되기 전에 미리 메모리에 등록됩니다
+function add() {
+  return 1 + 2;
+}
+add();
+
+// 함수를 선언한 이후에만 호출할 수 있습니다.
+const addFun = function () {
+  return 1 + 2;
+};
+addFun();
+
+function test(addFun) {
+  addFun();
+}
+
+function test(_func) {
+  _func();
+}
+
+test(addFun);
+```
+
+```js
+// 버튼예시
+bt.addEventListener("click", function () {});
+```
+
+- 아래 코드는 특히 위치를 살펴보자 : 완성하고 사용하자.
+
+```js
+add(); // 호이스팅이 되므로 괜찮다.
+addFN(); // 호이스팅 에러 발생한다.
+function add() {}
+const addFN = function () {};
+```

@@ -1432,3 +1432,317 @@ addFN(); // 호이스팅 에러 발생한다.
 function add() {}
 const addFN = function () {};
 ```
+
+## 7. 함수 추가 정리
+
+### 7.1. 함수를 만들 시점 (언제 함수를 만들까에 대한 안내)
+
+#### 7.1.1. 코드가 너무 긴 경우(`하나의 결과를 만들기 위해서 작성시`)
+
+- 코드 가독성이 너무 떨어져서 추후 분석이 곤란할 때
+- 하나의 결과를 만들기 위한 과정을 작성중 너무 많은 코드가 작성될때
+- 여러 줄이 작성되어서 한개의 결과를 만든다면 함수로 묶어서 만들까? 고민하자.
+
+#### 7.1.2. 동일한 기능이 여러 번 사용될때
+
+- 2번이상 동일한 기능이라면 함수를 만들까? 고민
+- 2번이상 동일한 기능인데 재료만 다르다? 함수만들까?
+
+#### 7.1.3. 코드를 누군가에게 주어야 할 때
+
+-코드를 공유할 때 함수만들까? 고민
+
+### 7.2. 함수 만드는 법
+
+- `{}` 로 코드 블럭을 이용해서 묶어준다.
+- 이름을 짓는데, `동사`로 지어준다. (기본: Camel, 생성자함수: Pascal)
+- 이름 뒤에 `()` 를 작성한다.
+- 이름 뒤에 `(재료, 재료)` 를 작성한다.
+- 이름 뒤에 `(매개변수, 매개변수)` 를 작성한다.
+- 이름 뒤에 `(parameter, parameter)` 를 작성한다.
+- function 키워드를 작성해 준다.
+- `JSDoc` 으로 사용설명서를 작성해 주면 좋겠다.
+
+### 7.3. 함수 사용법(`호출, call` 등으로 명칭함)
+
+- 함수명();
+- 함수를 호출했다.
+- 함수를 call 했다.
+
+### 7.4. 함수 샘플
+
+- 넓이를 계산하는 기능, 그런데 2번이상 사용, 누군가에게 공유
+
+```js
+/**
+ * 너비를 계산해 주는 함수
+*/
+@param {number} _width
+@param {number} _height
+@returns {number}
+
+function calcRect(_width, _height){
+ return _width * _height;
+}
+// 함수 호출
+const result = calcRect(5,4);
+console.log(result); // 20
+```
+
+### 7.5. 함수에 추가 내용
+
+- 매개변수에 기본값을 지정할 수 있다.
+
+```js
+function 함수명(매개변수 = 기본값) {}
+```
+
+- 매개변수 개수에는 제한이 없다.
+
+```js
+function 함수명(매개변수1, 매개변수2, ...rest) {
+  const prams = rest; // 배열로 접근 가능
+}
+함수명(1, 2, 3, 4, 5);
+```
+
+- 기본 함수 작성법 2가지
+
+```js
+// 기본 함수 정의
+function 함수명() {}
+
+// 함수 표현식 정의
+const 함수명 = function () {};
+```
+
+```js
+// 콜백 함수 정의
+const add = function () {
+  console.log("콜백 함수가 호출되었습니다!");
+};
+
+// 콜백을 실행하는 함수
+function calcFunc(_fn) {
+  _fn(); // 전달받은 함수 호출
+}
+
+// 함수 호출
+calcFunc(add);
+
+// 출력: 콜백 함수가 호출되었습니다!
+```
+
+## 8. 화살표 함수(Arrow Function)
+
+- FE 에서 함수 작성시 많이 볼 수 있는 형태
+- 활용 비율이 높다. 반드시 이해해 보자.
+- this 의 범위가 고정됩니다.
+- new 를 사용 못 합니다.
+
+### 8.2. 화살표 함수 작성법
+
+- 매개변수 없는 경우
+
+```js
+const 함수이름 = (매개변수) => {
+  실행문;
+};
+// 기본 함수
+function say() {
+  console.log("안녕");
+}
+// 표현식 함수
+const say = function () {
+  console.log("안녕");
+};
+// 화살표 함수
+const sayArrow = () => {
+  console.log("안녕");
+};
+// 실행코드가 한 줄이면 `{} 블럭`생략 가능
+const sayAArow2 = () => console.log("안녕");
+```
+
+- `매개변수`가 오로지 `1개 있을 때`
+
+```js
+// 기본 함수
+function say(_word) {
+  console.log(_word);
+}
+// 표현식 함수
+const say = function (_word) {
+  console.log(_word);
+};
+// 화살표 함수
+const sayArrow = (_word) => {
+  console.log(_word);
+};
+// 매개변수가 1개일 땐 소괄호 생략 가능
+const sayAArow2 = `(_word)` => console.log(_word);
+```
+
+- 매개변수가 2개 이상일 때
+
+```js
+function say(_word, _name) {
+  console.log _word + _name;
+}
+// 표현식 함수
+const say = function (_word, _name) {
+  console.log _word + _name;
+};
+// 화살표 함수
+const sayArrow = (_word, _name) => {
+  console.log _word + _name;
+};
+// console.log ()로 없애고 +로 가능
+const sayAArow2 = (_word, _name) => console.log _word + _name;
+```
+
+## 9. 스코프의 이해
+
+- 변수의 활용 가능한 범위
+- 제일 중요한것은 `{}` 입니다.
+
+## 9.1. Scope 의 종류 2가지
+
+- 전역 범위 : Global Scope
+- 지역 범위 : Local Scope
+
+## 9.2. 전역 범위
+
+- 프로그램 어디서든 마음대로 접근해서 활용
+
+```js
+// 어디서든 접근 가능한 변수 → 프로그램 전체(모든 함수, 블록)에서 사용할 수 있는 변수.
+let globalVar = "나는 전역 변수야!";
+
+function show() {
+  console.log(globalVar); // 함수 안에서도 사용 가능
+}
+
+show(); // 출력: 나는 전역 변수야!
+console.log(globalVar); // 출력: 나는 전역 변수야!
+```
+
+## 9.3. 지역범위
+
+- `{}` 블록 안쪽을 `지역범위`라고 합니다.
+
+```js
+// 지역변수
+// 지역 안
+fuction say() {
+  let appName = "안녕";
+console.log(appName);
+}
+say();
+// 지역 밖
+console.log(appName);
+```
+
+```js
+// 전체
+let appName = "안녕"; // 전역 변수 선언
+
+function say() {
+  console.log(appName); // 전역 변수에 접근
+}
+
+say(); // "안녕"
+console.log(appName); // "안녕" - 전역 변수에 접근
+
+// 지역
+function say() {
+  let appName = "안녕"; // 지역 변수 선언
+  console.log(appName); // 지역 변수에 접근
+}
+
+say(); // "안녕"
+```
+
+- function 은 전역에 등록되므로 예측 곤란
+- 전역O 지역은 되도록 안 함.
+
+## 10. `this` 라는 키워드가 위를 괴롭힐 겁니다.
+
+- this가 스코프와 연결되면서 혼란스럽다.
+
+## 10.1 전역 스코프의 this는 `window` 이다.
+
+```js
+console.log(this); //window{...
+```
+
+### 10.2. function 의 this 는 `window` 이다.
+
+```js
+function say() {
+  console.log(this);
+  function hi() {
+    console.log(this);
+  }
+  hi();
+}
+say();
+```
+
+```js
+const say = () => {
+  console.log(this);
+};
+say();
+```
+
+### 10.3. function 또는 표현식 함수는 this 사용시 위험한 코드이다.
+
+- this 는 동일한 스코프를 가르쳐서 값이 변할 위험 존재
+- this 는 물어보지도 않고 let 변수를 만들고 window 변수에 등록
+- 즉 function에 this 넣지 말기
+
+```js
+let brand = "nkie";
+function now() {
+  this.brand = "adidas"; // 여기서의 this는 globalThis
+}
+
+console.log("함수실행전 : ", brand); // 👉 "nkie"
+now();
+console.log("함수실행후 : ", brand); // 👉 여전히 "nkie"
+console.log("this.brand: ", this.brand); // 👉 "adidas"
+```
+
+### 10.4. 객체에 속성으로 만든 함수에서의 this
+
+- `객체에서 this` 는 객체 전체를 가르킨다.
+- 어? function 사용하니까 `this 가 상황에 따라서 변하는데?`
+
+```js
+const Preson = {
+  name: "아이유",
+  age: 20,
+  SayHi: function () {
+    console.log(this);
+  },
+};
+```
+
+```js
+// this는 함수 호출 방식에 따라 다르게 동작
+function coffee() {
+  console.log(this);
+}
+coffee();
+```
+
+### 10.5. 객체 생성자 함수로 사용시 this
+
+```js
+function robot(_owner) {
+  this;
+}
+robot("길동이");
+new robot("길동이"); // new는 객체 생성
+```

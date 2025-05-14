@@ -1746,3 +1746,401 @@ function robot(_owner) {
 robot("길동이");
 new robot("길동이"); // new는 객체 생성
 ```
+
+### 10.6. 내가 이해하기로 아래처럼 정리했다.
+
+- function 에 작성한 this 는 어디서 함수를 사용했는가에 따라 다르다.
+
+```js
+const Person = {
+say : function(){
+
+}
+}
+say(); 지금은 person, say 함수를 사용했으므로
+
+person.say();
+```
+
+### 10.7. 화살표 함수의 this는?
+
+- 화살표 함수는 `상위 스코프`를 가르킨다.
+
+```js
+const say = () => {
+  console.log(this);
+};
+say();
+```
+
+```js
+const Person = {
+  name: "아이유",
+  say: function () {
+    console.log(this.name);
+  },
+};
+Person.say();
+Person.sayArrow();
+```
+
+```js
+const Person = {
+  name: "아이유",
+  say: function () {
+    setTimeout(function () {
+      console.log("일반 함수:");
+      console.log(this); // window (또는 undefined in strict mode)
+      console.log(this.name); // undefined: window.name 찾음
+    }, 3000);
+  },
+  sayArrow: () => {
+    console.log("화살표 함수:");
+    console.log(this); // 전역 객체 (window)
+    console.log(this.name); // undefined: 객체.name 찾음
+
+    setTimeout(() => {
+      console.log("setTimeout 안의 화살표 함수:");
+      console.log(this); // 여전히 window
+      console.log(this.name); // undefined: window.name 찾음
+    }, 3000);
+  },
+};
+
+Person.say(); // 3초 후: 일반 함수 → this는 window
+Person.sayArrow(); // 즉시 실행 + 3초 후 실행 → this는 window
+```
+
+## 11. 생성자 함수 (목적이 `객체를 생성`하는 것)
+
+- `new 키워드`를 붙여서 함수를 호출하다.
+
+```js
+// 메서드를 인스턴스마다 정의
+function Person(_name) {
+  this.name = _name;
+  this.say = function () {
+    console.log(this.name + " 안녕하세요");
+  };
+  console.log(this);
+  console.log(this.name);
+}
+
+const a = new Person("둘리");
+a.say();
+
+const b = new Person("또치");
+b.say();
+
+const c = new Person("마이콜");
+c.say();
+
+const d = new Person("고길동");
+d.say();
+```
+
+- `prototype`을 이용하면 공통 기능을 자동으로 부여한다.
+
+```js
+// prototype을 이용
+function Person(_name) {
+  this.name = _name;
+  console.log(this);
+  console.log(this.name);
+}
+
+Person.prototype.say = function () {
+  console.log(this.name + " 안녕하세요");
+};
+
+const a = new Person("둘리");
+a.say();
+
+const b = new Person("또치");
+b.say();
+
+const c = new Person("마이콜");
+c.say();
+
+const d = new Person("고길동");
+d.say();
+```
+
+## 12. 클래스
+
+- 목적이 `객체를 생성`하는 것
+
+### 12.1. 생성자 메소드 (constructor Method)
+
+```js
+class Person {
+  // 클래스에서 메소드 함수 만드는 법
+  // 메소드명(){}
+  // 객체를 생성하는 함수 : 변경 불가
+  // 디폴트 객체 생성자 함수
+  constructor(_name, _age) {
+    console.log("new 하면 자동 실행");
+    console.log(_name);
+    this.name = _name;
+    this.age = _age;
+  }
+}
+const a = new Person("둘리", 500000);
+console.log(a);
+```
+
+```
+사람이라는 것을 코딩으로 표현하고 싶다.
+Property(특성, 속성, attribute) : 성별, 직업, 이름, 나이 등
+
+ Method(함수...) : function 웃는다()
+```
+
+### 12.2. 나의 메소드 만들기
+
+- `메소드명 () {할일}`
+
+```js
+class Person {
+  constructor(_name, _age) {
+    console.log("new 하면 자동 실행");
+    console.log(_name);
+    this.name = _name;
+    this.age = _age;
+  }
+
+  // say라는 메소드 정의
+  say() {
+    console.log(this.name); // say 메소드에서 name을 출력합니다.
+  }
+}
+
+const a = new Person("둘리", 500000);
+a.say(); // say 메소드 호출, name이 출력됩니다.
+console.log(a); // 객체 출력
+```
+
+### 12.3. 나의 속성 만들기
+
+- Property : 프로퍼티
+- constructor 메소드에서 만든다.
+
+```js
+  constructor(_name, _age) {
+    this.name = _name;
+    this.age = _age;
+  }
+```
+
+### 12.4. 상속 이해해 보기
+
+- 행동은 메소드 / 모양은 상속
+
+- 1단계
+
+```js
+// 동물
+class Animal {
+  constructor() {
+    this.eye = 2;
+    this.nose = 1;
+  }
+}
+// 강아지
+class Dog {
+  constructor() {
+    this.eye = 2;
+    this.nose = 1;
+  }
+}
+// 새
+class Bird {
+  constructor() {
+    this.eye = 2;
+    this.nose = 1;
+  }
+}
+```
+
+- 2단계
+
+```js
+// 동물 클래스
+class Animal {
+  constructor(eye, nose) {
+    this.eye = eye;
+    this.nose = nose;
+  }
+}
+
+// 강아지 클래스
+class Dog extends Animal {
+  constructor() {
+    super(2, 1); // 동물의 기본 특징: 눈 2개, 코 1개
+    this.name = "강아지";
+  }
+}
+
+const b = new Dog();
+console.log(b);
+
+// 새 클래스
+class Bird extends Animal {
+  constructor() {
+    super(2, 1);
+    this.name = "이쁜새";
+  }
+}
+
+const c = new Bird();
+console.log(c);
+
+// 출력 결과 예시
+Dog { eye: 2, nose: 1, name: '강아지' }
+Bird { eye: 2, nose: 1, name: '이쁜새' }
+
+```
+
+- 3단계: 확장
+
+```js
+// 동물 클래스
+class Animal {
+  constructor(eye, nose) {
+    this.eye = eye;
+    this.nose = nose;
+  }
+  speak(){
+    console.log("소리를 내요");
+  }
+}
+const a = new Animal(2,1);
+a.speak();
+
+// 강아지 클래스
+class Dog extends Animal {
+  constructor() {
+    super(2, 5);
+    this.name = "강아지";
+  }
+    speak(){
+    console.log("멍멍이라고 소리를 내요");
+}
+}
+
+const b = new Dog();
+b.speak();
+console.log(b);
+
+// 새 클래스
+class Bird extends Animal {
+  constructor() {
+    super(2, 1);
+    this.name = "이쁜새";
+  }
+      speak(){
+    console.log("짹짹이라고 소리를 내요");
+}
+}
+
+const c = new Bird();
+c.speak();
+console.log(c);
+
+// 출력 결과 예시
+소리를 내요
+멍멍이라고 소리를 내요
+Dog { eye: 2, nose: 5, name: '강아지' }
+짹짹이라고 소리를 내요
+Bird { eye: 2, nose: 1, name: '이쁜새' }
+```
+
+### 12.5. 접근 제한자 이해하기
+
+- 프로퍼티와 메소드를 활용하는
+
+### 12.5.1. 종류
+
+- 만약 JAVA 라면
+
+```java
+public : 마음대로 접근가능, 공유하는
+private : 사적인 즉, 클래스 내부에서만 접근가능
+protected : 상속 받은 클래스들만 접근 가능
+```
+
+- 만약 JavaScript 라면
+
+```js
+public : 마음대로 접근가능, 공유하는
+# : 사적인 즉, 클래스 내부에서만 접근가능
+```
+
+```js
+class Animal {
+  // 안적으면 public
+  eye;
+  // #을 적으면 pricate
+  #nose;
+
+  constructor(eye, nose) {
+    this.eye = eye;
+    this.#nose = nose;
+  }
+}
+
+class Dog extends Animal {
+  constructor() {
+    super(2, 5);
+  }
+}
+
+const a = new Dog();
+console.log(a);
+console.log(a.eye);
+console.log(a.#nose);
+```
+
+### 12.6. 클래스에 고정된 속성, 메소드
+
+```js
+class MathCalc {
+  constructor() {}
+  static add(a, b) {}
+  static minus(a, b) {}
+}
+MathCalc.add(3, 4);
+MathCalc.minus(3, 4);
+
+const a = new MathCalc();
+a.add(3, 4); /// 에러: 생성된 객체로 접근 불가
+```
+
+## 13. 콜백함수
+
+- `call`은 함수를 실행한다는 의미
+- 일반 함수에 `매개변수로 전달된 함수`를 callback 함수라 칭한다.
+
+### 13.1. 콜백함수 활용처
+
+- 주로 사용자 행동에 따른 `이벤트 발생`시 실행하는 함수
+- 서버 연동하여 자료를 호출하는 `이벤트 발생`시 실행하는 함수
+
+```js
+const say = function () {};
+const cry = () => {};
+// 매개변수로 전달된 함수 실행
+function run(a) {
+  a();
+}
+
+run(say);
+run(cry);
+// 아래 추천함.
+run(function () {});
+```
+
+```js
+const bt = document.querySelector;
+bt.addEventLstener("click", function () {});
+```

@@ -2869,3 +2869,79 @@ getData("users")
   .then(usersParser)
   .catch((error) => console.error(error));
 ```
+
+### 17.6 async / await
+
+-강력히 추천합니다.
+
+- Promise 를 편하게 쓰기 위해서 최신 문법 제공
+- `function 키워드 앞쪽에 async`를 작성합니다.
+- `BE 연동 쪽에 await`를 작성합니다.
+
+- 1단계
+
+```js
+async function getAllData() {
+  try {
+    const apiUrl = "https://jsonplaceholder.typicode.com";
+
+    let res = await fetch(`${apiUrl}/posts`);
+    let data = await res.json();
+    console.log("Posts:", data);
+
+    res = await fetch(`${apiUrl}/comments`);
+    data = await res.json(); // 오타 수정: resa -> res
+    console.log("Comments:", data);
+
+    res = await fetch(`${apiUrl}/albums`);
+    data = await res.json();
+    console.log("Albums:", data);
+
+    res = await fetch(`${apiUrl}/photos`);
+    data = await res.json();
+    console.log("Photos:", data);
+
+    res = await fetch(`${apiUrl}/todos`);
+    data = await res.json();
+    console.log("Todos:", data);
+
+    res = await fetch(`${apiUrl}/users`);
+    data = await res.json();
+    console.log("Users:", data);
+  } catch (error) {
+    console.log("ERROR 입니다:", error); // 오류 메시지도 출력
+  }
+}
+getAllData();
+```
+
+- 2단계
+
+```js
+// 축약형
+async function getAllData() {
+  try {
+    const endpoints = [
+      "posts",
+      "comments",
+      "albums",
+      "photos",
+      "todos",
+      "users",
+    ];
+    const apiUrl = "https://jsonplaceholder.typicode.com";
+
+    for (const endpoint of endpoints) {
+      const res = await fetch(`${apiUrl}/${endpoint}`);
+      const data = await res.json();
+      console.log(
+        `${endpoint.charAt(0).toUpperCase() + endpoint.slice(1)}:`,
+        data
+      );
+    }
+  } catch (error) {
+    console.log("ERROR 입니다:", error);
+  }
+}
+getAllData();
+```
